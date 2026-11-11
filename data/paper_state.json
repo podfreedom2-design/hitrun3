@@ -1,0 +1,92 @@
+{
+  "created": "2026-10-30",
+  "cash": 6273.35,
+  "holdings": {
+    "HANA": {
+      "shares": 500,
+      "cost": 22704.1875
+    },
+    "IRPC": {
+      "shares": 9100,
+      "cost": 23742.80912911892
+    },
+    "KCE": {
+      "shares": 300,
+      "cost": 20697.1875
+    },
+    "KKP": {
+      "shares": 200,
+      "cost": 23381.55
+    },
+    "SPRC": {
+      "shares": 1700,
+      "cost": 23200.92065076828
+    }
+  },
+  "trades": [
+    {
+      "date": "2026-10-30",
+      "side": "BUY",
+      "sym": "HANA",
+      "shares": 500,
+      "price": 45.25,
+      "fee": 79.19,
+      "value": 22625.0,
+      "pnl": null,
+      "pnl_pct": null
+    },
+    {
+      "date": "2026-10-30",
+      "side": "BUY",
+      "sym": "IRPC",
+      "shares": 9100,
+      "price": 2.6,
+      "fee": 82.81,
+      "value": 23660.0,
+      "pnl": null,
+      "pnl_pct": null
+    },
+    {
+      "date": "2026-10-30",
+      "side": "BUY",
+      "sym": "KCE",
+      "shares": 300,
+      "price": 68.75,
+      "fee": 72.19,
+      "value": 20625.0,
+      "pnl": null,
+      "pnl_pct": null
+    },
+    {
+      "date": "2026-10-30",
+      "side": "BUY",
+      "sym": "KKP",
+      "shares": 200,
+      "price": 116.5,
+      "fee": 81.55,
+      "value": 23300.0,
+      "pnl": null,
+      "pnl_pct": null
+    },
+    {
+      "date": "2026-10-30",
+      "side": "BUY",
+      "sym": "SPRC",
+      "shares": 1700,
+      "price": 13.6,
+      "fee": 80.92,
+      "value": 23120.0,
+      "pnl": null,
+      "pnl_pct": null
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-10-30",
+      "equity": 119603.35
+    }
+  ],
+  "last_rebalance": "2026-10-30",
+  "last_regime": "STOCKS",
+  "note": "2026-11-11: reset to the 2026-10-30 month-end booking; the 2026-11-09 mid-month sell-all was a bug (copy: data/backup/paper_state_WRONG_midmonth_sell_20261109.json)"
+}

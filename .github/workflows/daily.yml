@@ -1,0 +1,81 @@
+name: HitRun daily
+
+on:
+  schedule:
+    - cron: "0 11 * * 1-5"   # 18:00 เวลาไทย จันทร์-ศุกร์ (GitHub อาจช้า 5-30 นาที)
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: hitrun-daily
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    env:
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+      DASHBOARD_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/
+      PYTHONUTF8: "1"
+      TZ: Asia/Bangkok
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install
+        run: pip install -r requirements.txt
+
+      - name: Run daily (fetch -> signal -> paper -> alerts -> dashboard)
+        run: python run.py daily
+
+      - name: Build site
+        if: always()
+        run: |
+          mkdir -p _site
+          if [ -f out/dashboard.html ]; then cp out/dashboard.html _site/index.html; else echo "<h1>HitRun V3: ยังไม่มีแดชบอร์ด</h1>" > _site/index.html; fi
+          for f in ai_report.json ai_report.md alerts.json equity.csv trades.csv holdings.csv; do [ -f out/$f ] && cp out/$f _site/ || true; done
+          touch _site/.nojekyll
+
+      - name: Commit data back
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git add data/prices data/unadj_panel.csv data/corrections.csv data/paper_state.json data/alert_state.json 2>/dev/null || true
+          if git diff --cached --quiet; then echo "no data change"; else
+            git commit -m "data: daily update $(date +%F)" && git push; fi
+
+      - uses: actions/configure-pages@v5
+        if: always()
+      - uses: actions/upload-pages-artifact@v3
+        if: always()
+        with:
+          path: _site
+      - id: deploy
+        if: always()
+        uses: actions/deploy-pages@v4
+
+      - name: Telegram alert on failure
+        if: failure()
+        run: |
+          [ -f out/.crash_notified ] && exit 0
+          python - <<'PY'
+          import os, sys
+          sys.path.insert(0, ".")
+          from hitrun3 import telegram as TG
+          url = f"{os.environ['GITHUB_SERVER_URL']}/{os.environ['GITHUB_REPOSITORY']}/actions/runs/{os.environ['GITHUB_RUN_ID']}"
+          TG.send("❌ HitRun V3 — GitHub Actions ล้มเหลว\nดู log: " + url)
+          PY

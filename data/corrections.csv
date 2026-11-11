@@ -1,0 +1,4 @@
+sym,action,date,value,note
+TRUE,scale_before,2023-03-03,1.666167,"TRUE-DTAC amalgamation 2023-03-03: 1 old TRUE = 0.60018 new TRUE -> pre-merger prices x (1/0.60018). Yahoo did not adjust (4.873 -> 8.217 jump). Verify ratio against SET news if needed."
+SCB,drop,2022-04-20,,"SCBX first bar (57.84) is bad; next bar 2022-04-27 = 80.90. Old SCB (pre-2022 bank) history is not in Yahoo."
+EA,ack_jump,2024-07-18,,"Real crash (EA trading halt/SP then -42% vs last traded 9.15 on 2024-07-16 per Yahoo). Not a data error; no price change."
