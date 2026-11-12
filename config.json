@@ -27,7 +27,7 @@
   "corrections_file": "data/corrections.csv",
   "set_div_yield": 0.032,
   "unadj_max_age_days": 7,
-  "paper_book_local": true,
+  "paper_book_local": false,
   "membership_file": "data/membership.csv",
   "use_membership": false
 }
